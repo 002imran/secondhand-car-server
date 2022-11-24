@@ -14,4 +14,4 @@ app.get('/', async (req, res) => {
     res.send('zCar server is running')
 })
 
-app.listen(port, () => console.log(`zCar is running on port: ${port}`))
+app.listen(port, () => console.log(`zCar is running on port : ${port}`))
