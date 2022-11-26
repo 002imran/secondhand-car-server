@@ -1,0 +1,71 @@
+[
+    {  
+        "category_id": "01",
+        "carName": "Electric Car, Model C",
+        "carImage": "https://i.ibb.co/k659k49/tesla1.jpg",
+        "location" : "Dhaka",
+        "originalPrice": "50,00000/=",
+        "resellPrice": "35,00000/=",
+        "totalUsed": "2years",
+        "sellerName": "Masud Rana",
+        "dateOfPost": "12.11.2022"
+    },
+   
+    {  
+        "category_id": "02",
+        "carName": "Toyota",
+        "carImage": "https://i.ibb.co/c8Bs8Y7/toyota.jpg",
+        "location" : "Dhaka,Uttara",
+        "originalPrice": "40,00000/=",
+        "resellPrice": "25,00000/=",
+        "totalUsed": "4years",
+        "sellerName": "Sadiq Hasan",
+        "dateOfPost": "20.11.2022"
+    },
+    {
+        "category_id": "01",
+        "carName": "Electric Car, Tesla",
+        "carImage": "https://i.ibb.co/3Rq2YdV/tesla2.jpg",
+        "location": "Khulna",
+        "originalPrice": "60,00000/=",
+        "resellPrice": "45,00000/=",
+        "totalUsed": "3years",
+        "sellerName": "Rubel Khan",
+        "dateOfPost": "11.11.2022"
+    },
+    {  
+        "category_id": "02",
+        "carName": "Honda",
+        "carImage": "https://i.ibb.co/gdZbPkD/honda.png",
+        "location" : "Rajshahi",
+        "originalPrice": "60,00000/=",
+        "resellPrice": "50,00000/=",
+        "totalUsed": "2years",
+        "sellerName": "Raji Jan",
+        "dateOfPost": "12.11.2022"
+    },
+    {  
+        "category_id": "03",
+        "carName": "Noah",
+        "carImage": "https://i.ibb.co/j6Szskg/noah.jpg",
+        "location" : "Dhaka, Mohammadpur",
+        "originalPrice": "30,00000/=",
+        "resellPrice": "20,00000/=",
+        "totalUsed": "3years",
+        "sellerName": "Jamal Khan",
+        "dateOfPost": "15.11.2022"
+    },
+    {  
+        "category_id": "03",
+        "carName": "Noah X",
+        "carImage": "https://i.ibb.co/3RR2pXH/noah1.jpg",
+        "location" : "Dhaka,Savar",
+        "originalPrice": "40,00000/=",
+        "resellPrice": "35,00000/=",
+        "totalUsed": "1years",
+        "sellerName": "Taufiq Rahman",
+        "dateOfPost": "16.11.2022"
+    }
+]
+
+

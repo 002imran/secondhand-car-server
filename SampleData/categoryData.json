@@ -1,0 +1,17 @@
+[
+    {
+    "car_category_id": "01",
+    "name": "Electric Car",
+    "img": "https://i.ibb.co/cLVgCHT/electric.jpg"
+    },
+    {
+    "car_category_id": "02",
+    "name": "Luxury Car",
+    "img": "https://i.ibb.co/PxW2R1h/luxury.webp"
+    },
+    {
+    "car_category_id": "03",
+    "name": "Micro Bus",
+    "img": "https://i.ibb.co/nBL91bG/micro.jpg"
+    }
+]

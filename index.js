@@ -17,15 +17,39 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 async function run(){
     try{
-        const categoriesCollection = client.db('zCar').collection('categorie');
-        
-        //api to get categories data
-        app.get('/categories', async(req, res) => {
+        const categoriesCollection = client.db('zCar').collection('category');
+        const carCollection = client.db('zCar').collection('carCollection'); 
+        const electricCar = client.db('zCar').collection('electricCar'); 
+        // api to get categories data
+        app.get('/category', async(req, res) => {
             const query = {};
             const categories = await categoriesCollection.find(query).toArray();
             res.send(categories);
         
         })
+
+        // app.get('/category/:id', async(req, res)=>{
+        //     const query = {};
+        //     const cars = await carCollection.find(query).toArray();
+        //     res.send(cars);
+
+        // })
+
+
+        
+        //api to get dynamically carcollection data
+        app.get('/category/:id', async(req, res)=>{
+            const query = {};
+            const cars = await carCollection.find(query).toArray();
+            const id = req.params.id;
+            const category_cars = cars.filter(n=> n.category_id === id);
+            res.send(category_cars);
+
+        })
+   
+
+
+
 
     }
     finally{
