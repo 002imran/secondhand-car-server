@@ -20,6 +20,8 @@ async function run(){
         const categoriesCollection = client.db('zCar').collection('category');
         const carCollection = client.db('zCar').collection('carCollection'); 
         const electricCar = client.db('zCar').collection('electricCar'); 
+        const bookingCollection = client.db('zCar').collection('carBooking');
+
         // api to get categories data
         app.get('/category', async(req, res) => {
             const query = {};
@@ -45,6 +47,13 @@ async function run(){
             const category_cars = cars.filter(n=> n.category_id === id);
             res.send(category_cars);
 
+        })
+
+        //api for car booking
+        app.post('/bookings', async(req, res) =>{
+            const booking = req.body;
+            const result = await bookingCollection.insertOne(booking);
+            res.send(result);
         })
    
 
