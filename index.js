@@ -1,7 +1,7 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
-
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
@@ -21,6 +21,7 @@ async function run(){
         const carCollection = client.db('zCar').collection('carCollection'); 
         const electricCar = client.db('zCar').collection('electricCar'); 
         const bookingCollection = client.db('zCar').collection('carBooking');
+        const usersCollection = client.db('zCar').collection('users');
 
         // api to get categories data
         app.get('/category', async(req, res) => {
@@ -55,9 +56,29 @@ async function run(){
             const result = await bookingCollection.insertOne(booking);
             res.send(result);
         })
-   
 
+        //api to post caradd
+        app.post('/addproduct', async(req, res) =>{
+            const addProduct = req.body;
+            const result = await carCollection.insertOne(addProduct);
+            res.send(result);
+        })
+        
+        //api to get my product data
+        app.get('/myproduct', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email};
+            const myProduct = await carCollection.find(query).toArray();
+            res.send(myProduct);
 
+        })
+
+        //api to save users in database
+        app.post('/users', async(req, res)=>{
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        })
 
 
     }
