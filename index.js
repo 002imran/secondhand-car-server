@@ -15,6 +15,22 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+function verifyJWT(req, res, next){
+    const authHeader = req.headers.authorization;
+    if(!authHeader){
+        return res.status(401).send('unauthorized access');
+    }
+    const token = authHeader.split(' ')[1];
+    
+    jwt.verify(token, process.env.ACCESS_TOKEN, function(err, decoded){
+        if(err){
+            return res.status(403).send({message: 'forbidden access'})
+        }
+        req.decoded = decoded;
+        next();
+    })
+}
+
 async function run(){
     try{
         const categoriesCollection = client.db('zCar').collection('category');
@@ -65,12 +81,28 @@ async function run(){
         })
         
         //api to get my product data
-        app.get('/myproduct', async (req, res) => {
+        app.get('/myproduct', verifyJWT, async (req, res) => {
             const email = req.query.email;
+            const decodedEmail = req.decoded.email;
+            if(email !== decodedEmail){
+                return res.status(403).send({message: 'forbidden access'});
+            }
             const query = { email: email};
             const myProduct = await carCollection.find(query).toArray();
             res.send(myProduct);
 
+        })
+
+        //jwt implement
+        app.get('/jwt', async(req, res)=>{
+            const email = req.query.email;
+            const query = {email: email};
+            const user = await usersCollection.findOne(query);
+            if(user){
+                const token = jwt.sign({email}, process.env.ACCESS_TOKEN, {expiresIn: '1d'})
+                return res.send({accessToken: token});
+            }
+            res.status(403).send({accessToken: ''})
         })
 
         //api to save users in database
@@ -78,6 +110,13 @@ async function run(){
             const user = req.body;
             const result = await usersCollection.insertOne(user);
             res.send(result);
+        })
+
+        //api to get users data
+        app.get('/users', async(req, res)=>{
+            const query = {};
+            const users = await usersCollection.find(query).toArray();
+            res.send(users);
         })
 
 
