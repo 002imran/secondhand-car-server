@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
@@ -38,6 +38,17 @@ async function run(){
         const electricCar = client.db('zCar').collection('electricCar'); 
         const bookingCollection = client.db('zCar').collection('carBooking');
         const usersCollection = client.db('zCar').collection('users');
+
+        //verify admin
+        const verifyAdmin = async (req, res, next) => {
+            const decodedEmail = req.decoded.email;
+            const query = { email: decodedEmail };
+            const user = await usersCollection.findOne(query);
+            if (user?.role !== 'admin') {
+                return res.status(403).send({ message: '' })
+            }
+            next()
+        }
 
         // api to get categories data
         app.get('/category', async(req, res) => {
@@ -112,12 +123,47 @@ async function run(){
             res.send(result);
         })
 
+        //api to check users role admin or not
+        app.get('/users/admin/:email', async(req, res)=>{
+            const email = req.params.email;
+            const query = {email}
+            const user = await usersCollection.findOne(query);
+            res.send({isAdmin: user?.role === 'admin'});
+        })
+
+
+       
+
+        //api to make admin
+        app.put('/users/admin/:id', verifyJWT, verifyAdmin, async(req, res) =>{
+            
+            const id = req.params.id;
+            const filter = {_id: ObjectId(id)};
+            const options = {upsert: true};
+            const updatedDoc = {
+                $set: {
+                    role: 'admin'
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        })
+
         //api to get users data
-        app.get('/users', async(req, res)=>{
+        app.get('/users', async (req, res) => {
             const query = {};
             const users = await usersCollection.find(query).toArray();
             res.send(users);
+        });
+
+        //specific users delete
+        app.delete('/users/:id', verifyJWT, verifyAdmin, async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
         })
+
 
 
     }
