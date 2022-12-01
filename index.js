@@ -38,6 +38,7 @@ async function run(){
         const electricCar = client.db('zCar').collection('electricCar'); 
         const bookingCollection = client.db('zCar').collection('carBooking');
         const usersCollection = client.db('zCar').collection('users');
+        const sellerCollection = client.db('zCar').collection('sellerUsers');
 
         //verify admin
         const verifyAdmin = async (req, res, next) => {
@@ -123,6 +124,15 @@ async function run(){
             res.send(result);
         })
 
+        //api to save seller in database
+        app.post('/sellerusers', async (req, res) => {
+            const user = req.body;
+            const result = await sellerCollection.insertOne(user);
+            res.send(result);
+        })
+
+
+
         //api to check users role admin or not
         app.get('/users/admin/:email', async(req, res)=>{
             const email = req.params.email;
@@ -161,6 +171,22 @@ async function run(){
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
             const result = await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
+
+        //api to get sellers data
+        app.get('/sellerusers', async (req, res) => {
+            const query = {};
+            const users = await sellerCollection.find(query).toArray();
+            res.send(users);
+        });
+
+        
+        //api for specific sellers account delete
+        app.delete('/sellerusers/:id', verifyJWT, verifyAdmin, async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await sellerCollection.deleteOne(filter);
             res.send(result);
         })
 
