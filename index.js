@@ -40,6 +40,7 @@ async function run(){
         const usersCollection = client.db('zCar').collection('users');
         const sellerCollection = client.db('zCar').collection('sellerUsers');
 
+
         //verify admin
         const verifyAdmin = async (req, res, next) => {
             const decodedEmail = req.decoded.email;
@@ -85,6 +86,13 @@ async function run(){
             res.send(result);
         })
 
+        // api to get bookings data
+        app.get('/bookings', async (req, res) => {
+            const query = {};
+            const bookings = await bookingCollection.find(query).toArray();
+            res.send(bookings);
+
+        })
         //api to post caradd
         app.post('/addproduct', async(req, res) =>{
             const addProduct = req.body;
@@ -187,6 +195,14 @@ async function run(){
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
             const result = await sellerCollection.deleteOne(filter);
+            res.send(result);
+        })
+
+        //api for delete orders
+        app.delete('/bookings/:id', verifyJWT, async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await bookingCollection.deleteOne(filter);
             res.send(result);
         })
 
